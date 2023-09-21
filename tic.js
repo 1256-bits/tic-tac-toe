@@ -32,6 +32,7 @@ const playField = (() => {
         else {
             console.log(`${result} is the winner`);
         }
+        clearField();
     }
     const makeMove = (player, position) => {
         if (field[position] === "") {
@@ -39,4 +40,5 @@ const playField = (() => {
             checkWin();
         }
     }
+    return { makeMove };
 })();
