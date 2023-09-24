@@ -1,6 +1,6 @@
 "use strict";
 
-const playField = (() => {
+function playField() {
   const field = new Array(3).fill(["", "", ""]);
   const clearField = () => {
     field.fill(["", "", ""]);
@@ -48,8 +48,12 @@ const playField = (() => {
     }
   };
 
-  return { makeMove };
-})();
+  const getBoard = () => field;
+  
+  const printBoard = () => console.log(field);
+
+  return { getBoard, makeMove, printBoard };
+}
 
 function Player(marker) {
   if (!Boolean(marker)) throw TypeError;
