@@ -1,10 +1,15 @@
 "use strict";
 
 function playField() {
-  const field = new Array(3).fill(["", "", ""]);
-  const clearField = () => {
-    field.fill(["", "", ""]);
+  const createField = () => {
+    const field = [];
+    for (let i = 0; i <= 2; i++) {
+      field[i] = ["", "", ""];
+    }
+    return field;
   };
+
+  const field = createField();
 
   const checkWin = () => {
     for (let i = 0; i < 3; i++) {
@@ -21,13 +26,19 @@ function playField() {
     }
     const leftDiag = field[0][0] + field[1][1] + field[2][2];
     const rightDiag = field[0][2] + field[1][1] + field[2][0];
-    if (isCombo(leftDiag) || isCombo(rightDiag)) {
+    if (isCombo(leftDiag)) {
       endGame(leftDiag[0]);
       return;
-    } else if (field.indexOf("") === -1) {
+    } else if (isCombo(rightDiag)) {
+      endGame(rightDiag[0]);
+      return;
+    } else if (noMoreMoves()) {
       endGame("");
     }
   };
+
+  const noMoreMoves = () =>
+    field.reduce((index, row) => row.indexOf("")) === -1;
 
   const isCombo = (str) => {
     if (str.length != 3) return false;
@@ -42,7 +53,6 @@ function playField() {
     } else {
       console.log(`${result} is the winner`);
     }
-    clearField();
   };
 
   const makeMove = (player, index) => {
@@ -54,7 +64,7 @@ function playField() {
 
   const getBoard = () => field;
 
-  const printBoard = () => field.forEach(row => console.log(row));
+  const printBoard = () => field.forEach((row) => console.log(row));
 
   return { getBoard, makeMove, printBoard };
 }
@@ -81,7 +91,3 @@ function gameController() {
 }
 
 const game = gameController();
-//while (true) {
-//  const pos = prompt();
-//  game.playRound(pos);
-//}
