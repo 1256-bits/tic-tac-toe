@@ -12,9 +12,9 @@ function playField() {
       const rowResult = field[i].join("");
       if (isCombo(colResult) || isCombo(rowResult)) {
         endGame(result[0]);
+        return;
       }
     }
-
     const leftDiag = field[0][0] + field[1][1] + field[2][2];
     const rightDiag = field[0][2] + field[1][1] + field[2][0];
     if (isCombo(leftDiag) || isCombo(rightDiag)) {
@@ -49,7 +49,7 @@ function playField() {
   };
 
   const getBoard = () => field;
-  
+
   const printBoard = () => console.log(field);
 
   return { getBoard, makeMove, printBoard };
@@ -62,5 +62,7 @@ function Player(marker) {
   return { getMarker };
 }
 
-const player1 = Player("X");
-const player2 = Player("O");
+function gameController() {
+  const players = [Player("X"), Player("O")];
+
+}
