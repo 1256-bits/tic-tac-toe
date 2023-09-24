@@ -90,4 +90,13 @@ function gameController() {
   return { playRound };
 }
 
+function uiController() {
+    const cellClick = (e) => {
+        game.playRound(e.target.dataset.index);
+    }
+    const cells = document.querySelectorAll(".cell");
+    cells.forEach(cell => cell.addEventListener("click", cellClick));
+}
+
 const game = gameController();
+const ui = uiController();
