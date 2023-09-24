@@ -58,8 +58,8 @@ function playField() {
 function Player(marker) {
   if (!Boolean(marker)) throw TypeError;
   const marker = String(marker[0]);
-  const move = () => playField.makeMove(marker);
-  return { move };
+  const getMarker = () => marker;
+  return { getMarker };
 }
 
 const player1 = Player("X");
