@@ -8,8 +8,9 @@ const playField = (() => {
 
   const checkWin = () => {
     for (let i = 0; i < 3; i++) {
-      const result = field[0][i] + field[1][i] + field[2][i];
-      if (isCombo(result)) {
+      const colResult = field[0][i] + field[1][i] + field[2][i];
+      const rowResult = field[i].join("");
+      if (isCombo(colResult) || isCombo(rowResult)) {
         endGame(result[0]);
       }
     }
@@ -49,7 +50,6 @@ const playField = (() => {
 
   return { makeMove };
 })();
-
 
 function Player(marker) {
   if (!Boolean(marker)) throw TypeError;
