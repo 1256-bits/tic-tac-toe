@@ -10,8 +10,12 @@ function playField() {
     for (let i = 0; i < 3; i++) {
       const colResult = field[0][i] + field[1][i] + field[2][i];
       const rowResult = field[i].join("");
-      if (isCombo(colResult) || isCombo(rowResult)) {
-        endGame(result[0]);
+      if (isCombo(colResult)) {
+        endGame(colResult[0]);
+        return;
+      }
+      if (isCombo(rowResult)) {
+        endGame(rowResult);
         return;
       }
     }
@@ -50,11 +54,10 @@ function playField() {
 
   const getBoard = () => field;
 
-  const printBoard = () => console.log(field);
+  const printBoard = () => field.forEach(row => console.log(row));
 
   return { getBoard, makeMove, printBoard };
 }
-
 
 function Player(marker) {
   if (!Boolean(marker)) throw TypeError;
@@ -62,7 +65,6 @@ function Player(marker) {
   const getMarker = () => plMarker;
   return { getMarker };
 }
-
 
 function gameController() {
   const players = [Player("X"), Player("O")];
@@ -79,7 +81,7 @@ function gameController() {
 }
 
 const game = gameController();
-while (true) {
-    const pos = prompt();
-    game.playRound(pos);
-}
+//while (true) {
+//  const pos = prompt();
+//  game.playRound(pos);
+//}
