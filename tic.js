@@ -41,11 +41,11 @@ function playField() {
     clearField();
   };
 
-  const makeMove = (player, position) => {
-    if (field[position] === "") {
-      field[position] = player;
-      checkWin();
-    }
+  const makeMove = (player, index) => {
+    const row = Math.trunc(index / 3);
+    const col = index % 3;
+    field[row][col] = player;
+    checkWin();
   };
 
   const getBoard = () => field;
@@ -55,6 +55,7 @@ function playField() {
   return { getBoard, makeMove, printBoard };
 }
 
+
 function Player(marker) {
   if (!Boolean(marker)) throw TypeError;
   const marker = String(marker[0]);
@@ -62,7 +63,16 @@ function Player(marker) {
   return { getMarker };
 }
 
+
 function gameController() {
   const players = [Player("X"), Player("O")];
+  field = playField();
+  let activePlayer = players[0];
 
+  const playRound = (index) => {
+    field.makeMove(activePlayer.getMarker(), index);
+    activePlayer = activePlayer === players[0] ? players[1] : players[0];
+  };
+
+  return { playRound };
 }
