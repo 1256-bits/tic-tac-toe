@@ -58,21 +58,28 @@ function playField() {
 
 function Player(marker) {
   if (!Boolean(marker)) throw TypeError;
-  const marker = String(marker[0]);
-  const getMarker = () => marker;
+  const plMarker = String(marker[0]);
+  const getMarker = () => plMarker;
   return { getMarker };
 }
 
 
 function gameController() {
   const players = [Player("X"), Player("O")];
-  field = playField();
+  const field = playField();
   let activePlayer = players[0];
 
   const playRound = (index) => {
     field.makeMove(activePlayer.getMarker(), index);
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    field.printBoard();
   };
 
   return { playRound };
+}
+
+const game = gameController();
+while (true) {
+    const pos = prompt();
+    game.playRound(pos);
 }
