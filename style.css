@@ -1,3 +1,43 @@
+:root {
+  --text: #050315;
+  --background: #fbfbfe;
+  --primary: #2f27ce;
+  --secondary: #dedcff;
+  --accent: #433bff;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: text;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bg {
+    background-color: var(--background);
+}
+
+.bg-primary {
+    background-color: var(--primary);
+}
+
+.bg-secondary {
+    background-color: var(--secondary);
+}
+
+.bg-accent {
+    background-color: var(--accent);
+}
+
+.header {
+    text-align: center;
+    color: var(--background);
+}
+
 .field {
   display: grid;
   grid-template-columns: repeat(3, 150px);
