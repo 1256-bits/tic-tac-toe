@@ -79,3 +79,13 @@ body {
 .cell {
   border: 1px dotted red;
 }
+
+.active {
+  fill: var(--accent);
+  color: var(--accent);
+}
+
+.idle {
+  fill: var(--secondary);
+  color: var(--secondary);
+}
