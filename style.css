@@ -59,7 +59,14 @@ body {
 
 .player {
   font-size: 1.5rem;
-  display: flex;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  justify-content: center;
+}
+
+.player-icon {
+  height: 30px;
+  width: 30px;
 }
 
 .field {
