@@ -15,7 +15,7 @@
 }
 
 body {
-  color: text;
+  color: var(--text);
   font-family: "Marcellus", sans-serif;
   height: 100vh;
 }
