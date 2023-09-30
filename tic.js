@@ -20,7 +20,7 @@ function playField() {
                 return;
             }
             if (isCombo(rowResult)) {
-                endGame(rowResult);
+                endGame(rowResult[0]);
                 return;
             }
         }
