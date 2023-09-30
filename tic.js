@@ -101,20 +101,32 @@ function gameController() {
 
 function uiController() {
     const cells = document.querySelectorAll(".cell");
+    const players = document.querySelectorAll(".player");
 
     const cellClick = (e) => {
         const roundEnded = game.playRound(e.target.dataset.index);
         if (roundEnded) {
             updateBoard();
+            players.forEach((player) => {
+                player.classList.toggle("active");
+                player.classList.toggle("idle");
+            });
         }
     };
 
     const updateBoard = () => {
         const board = game.getBoard();
-        cells.forEach((cell) => cell.style.backgroundImage = `url(${board[cell.dataset.index].toLowerCase()}.svg)`);
+        cells.forEach(
+            (cell) =>
+            (cell.style.backgroundImage = `url(${board[
+                cell.dataset.index
+            ].toLowerCase()}.svg)`),
+        );
     };
 
     cells.forEach((cell) => cell.addEventListener("click", cellClick));
+    players[0].classList.add("active");
+    players[1].classList.add("idle");
 }
 
 const game = gameController();
