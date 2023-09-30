@@ -85,19 +85,35 @@ function gameController() {
 
     const playRound = (index) => {
         const validMove = field.makeMove(activePlayer.getMarker(), index);
-        if (!validMove) return;
-        activePlayer = activePlayer === players[0] ? players[1] : players[0];
-        field.printBoard();
+        if (validMove) {
+            activePlayer = activePlayer === players[0] ? players[1] : players[0];
+            field.printBoard();
+            return true;
+        }
+        return false;
     };
 
-    return { playRound };
+    const getBoard = () =>
+        field.getBoard().reduce((total, row) => total.concat(row));
+
+    return { playRound, getBoard };
 }
 
 function uiController() {
-    const cellClick = (e) => {
-        game.playRound(e.target.dataset.index);
-    };
     const cells = document.querySelectorAll(".cell");
+
+    const cellClick = (e) => {
+        const roundEnded = game.playRound(e.target.dataset.index);
+        if (roundEnded) {
+            updateBoard();
+        }
+    };
+
+    const updateBoard = () => {
+        const board = game.getBoard();
+        cells.forEach((cell) => cell.style.backgroundImage = `url(${board[cell.dataset.index].toLowerCase()}.svg)`);
+    };
+
     cells.forEach((cell) => cell.addEventListener("click", cellClick));
 }
 
