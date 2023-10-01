@@ -93,3 +93,19 @@ body {
   fill: var(--secondary);
   color: var(--secondary);
 }
+
+dialog {
+  margin: auto;
+  padding: 2rem;
+  font-size: 4rem;
+  animation: 0.5s linear 0s fade-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opaacity: 1;
+  }
+}
