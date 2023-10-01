@@ -94,6 +94,9 @@ function gameController() {
 function uiController() {
   const cells = document.querySelectorAll(".cell");
   const players = document.querySelectorAll(".player");
+  const dialog = document.querySelector("#game-over");
+  const closeButton = dialog.lastElementChild;
+  const dialogText = dialog.firstElementChild;
 
   const cellClick = (e) => {
     const index = e.target.dataset.index;
@@ -104,6 +107,14 @@ function uiController() {
       return;
     }
     updateBoard();
+    if (result.getStatus() === "draw") {
+      dialog.showModal();
+      dialogText.innerText = "It's a draw";
+    }
+    if (result.getStatus() === "win") {
+      dialog.showModal();
+      dialogText.innerText = `${result.getMarker()} has won`;
+    }
     players.forEach((player) => {
       player.classList.toggle("active");
       player.classList.toggle("idle");
@@ -121,6 +132,8 @@ function uiController() {
   };
 
   cells.forEach((cell) => cell.addEventListener("click", cellClick));
+  dialog.addEventListener("cancel", (e) => e.preventDefault());
+  closeButton.addEventListener("click", () => dialog.close());
   players[0].classList.add("active");
   players[1].classList.add("idle");
 }
