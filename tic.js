@@ -62,7 +62,15 @@ function playField() {
 
   const getBoard = () => field;
 
-  return { getBoard, makeMove };
+  const resetBoard = () => {
+    for (let row of field) {
+      for (let i in row) {
+        row[i] = "";
+      }
+    }
+  };
+
+  return { getBoard, makeMove, resetBoard };
 }
 
 function Player(marker) {
@@ -88,7 +96,12 @@ function gameController() {
   const getBoard = () =>
     field.getBoard().reduce((total, row) => total.concat(row));
 
-  return { playRound, getBoard };
+  const reset = () => {
+    field.resetBoard();
+    activePlayer = players[0];
+  };
+
+  return { playRound, getBoard, reset };
 }
 
 function uiController() {
@@ -114,11 +127,12 @@ function uiController() {
     if (result.getStatus() === "win") {
       dialog.showModal();
       dialogText.innerText = `${result.getMarker()} has won`;
+    } else {
+      players.forEach((player) => {
+        player.classList.toggle("active");
+        player.classList.toggle("idle");
+      });
     }
-    players.forEach((player) => {
-      player.classList.toggle("active");
-      player.classList.toggle("idle");
-    });
   };
 
   const updateBoard = () => {
@@ -131,9 +145,15 @@ function uiController() {
     );
   };
 
+  const restartGame = () => {
+    dialog.close();
+    game.reset();
+    updateBoard();
+  };
+
   cells.forEach((cell) => cell.addEventListener("click", cellClick));
   dialog.addEventListener("cancel", (e) => e.preventDefault());
-  closeButton.addEventListener("click", () => dialog.close());
+  closeButton.addEventListener("click", restartGame);
   players[0].classList.add("active");
   players[1].classList.add("idle");
 }
