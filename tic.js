@@ -64,9 +64,7 @@ function playField() {
 
     const getBoard = () => field;
 
-    const printBoard = () => field.forEach((row) => console.log(row));
-
-    return { getBoard, makeMove, printBoard };
+    return { getBoard, makeMove };
 }
 
 function Player(marker) {
@@ -85,7 +83,6 @@ function gameController() {
         const validMove = field.makeMove(activePlayer.getMarker(), row, col);
         if (validMove) {
             activePlayer = activePlayer === players[0] ? players[1] : players[0];
-            field.printBoard();
             return true;
         }
         return false;
