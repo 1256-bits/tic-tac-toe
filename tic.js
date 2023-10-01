@@ -55,9 +55,7 @@ function playField() {
         }
     };
 
-    const makeMove = (player, index) => {
-        const row = Math.trunc(index / 3);
-        const col = index % 3;
+    const makeMove = (player, row, col) => {
         if (field[row][col]) return false;
         field[row][col] = player;
         checkWin();
@@ -83,8 +81,8 @@ function gameController() {
     const field = playField();
     let activePlayer = players[0];
 
-    const playRound = (index) => {
-        const validMove = field.makeMove(activePlayer.getMarker(), index);
+    const playRound = (row, col) => {
+        const validMove = field.makeMove(activePlayer.getMarker(), row, col);
         if (validMove) {
             activePlayer = activePlayer === players[0] ? players[1] : players[0];
             field.printBoard();
@@ -104,7 +102,10 @@ function uiController() {
     const players = document.querySelectorAll(".player");
 
     const cellClick = (e) => {
-        const roundEnded = game.playRound(e.target.dataset.index);
+        const index = e.target.dataset.index;
+        const row = Math.trunc(index / 3);
+        const col = index % 3;
+        const roundEnded = game.playRound(row, col);
         if (roundEnded) {
             updateBoard();
             players.forEach((player) => {
