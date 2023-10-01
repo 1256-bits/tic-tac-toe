@@ -1,5 +1,12 @@
 "use strict";
 
+function result(valid, status, player) {
+  const isValid = () => valid;
+  const getStatus = () => status;
+  const getMarker = () => player;
+  return { isValid, getStatus, getMarker };
+}
+
 function playField() {
   const createField = () => {
     const field = [];
@@ -12,39 +19,27 @@ function playField() {
   const field = createField();
 
   const checkWin = () => {
-    const result = { status: "", player: "" };
     for (let i = 0; i < 3; i++) {
       const colResult = field[0][i] + field[1][i] + field[2][i];
       const rowResult = field[i].join("");
       if (isCombo(colResult)) {
-        result.player = colResult[0];
-        result.status = "win";
-        break;
+        return result(true, "win", colResult[0]);
       }
       if (isCombo(rowResult)) {
-        result.player = rowResult[0];
-        result.status = "win";
-        break;
+        return result(true, "win", rowResult[0]);
       }
-    }
-    if (result.status) {
-      return result;
     }
 
     const leftDiag = field[0][0] + field[1][1] + field[2][2];
     const rightDiag = field[0][2] + field[1][1] + field[2][0];
     if (isCombo(leftDiag)) {
-      result.player = leftDiag[0];
-      result.status = "win";
+      return result(true, "win", leftDiag[0]);
     } else if (isCombo(rightDiag)) {
-      result.player = rightDiag[0];
-      result.status = "win";
+      return result(true, "win", rightDiag[0]);
     } else if (noMoreMoves()) {
-      result.status = "draw";
-    } else {
-      result.status = "valid";
+      return result(true, "draw");
     }
-    return result;
+    return result(true);
   };
 
   const noMoreMoves = () =>
@@ -59,11 +54,10 @@ function playField() {
 
   const makeMove = (player, row, col) => {
     if (field[row][col]) {
-      return { status: "illegal" };
+      return result(false);
     }
     field[row][col] = player;
-    const result = checkWin();
-    return result;
+    return checkWin();
   };
 
   const getBoard = () => field;
@@ -85,7 +79,7 @@ function gameController() {
 
   const playRound = (row, col) => {
     const result = field.makeMove(activePlayer.getMarker(), row, col);
-    if (result.status === "valid") {
+    if (result.isValid()) {
       activePlayer = activePlayer === players[0] ? players[1] : players[0];
     }
     return result;
@@ -106,13 +100,14 @@ function uiController() {
     const row = Math.trunc(index / 3);
     const col = index % 3;
     const result = game.playRound(row, col);
-    if (result.status !== "illegal") {
-      updateBoard();
-      players.forEach((player) => {
-        player.classList.toggle("active");
-        player.classList.toggle("idle");
-      });
+    if (!result.isValid()) {
+      return;
     }
+    updateBoard();
+    players.forEach((player) => {
+      player.classList.toggle("active");
+      player.classList.toggle("idle");
+    });
   };
 
   const updateBoard = () => {
