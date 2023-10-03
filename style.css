@@ -6,6 +6,8 @@
   --primary: #2f27ce;
   --secondary: #dedcff;
   --accent: #433bff;
+  --accent-yellow: #ffcb3b;
+  --secondary-yellow: #fbffdc;
 }
 
 * {
@@ -139,12 +141,21 @@ dialog p {
   grid-column: 1/5;
 }
 
-.difficulty:hover {
+dialog button:hover {
   border-color: red;
 }
 
-.difficulty:focus-visible {
+dialog button:focus-visible {
   outline: var(--accent) solid 0.2rem;
+}
+
+dialog button:active {
+  background-color: var(--secondary-yellow);
+}
+
+.button-selected {
+  background-color: var(--secondary-yellow);
+  border-color: var(--accent-yellow);
 }
 
 .button-wrapper {
