@@ -101,6 +101,17 @@ dialog {
   animation: 0.5s linear 0s fade-in;
 }
 
+dialog li {
+  list-style: none;
+  margin-top: 1rem;
+}
+
+dialog label {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -108,4 +119,41 @@ dialog {
   to {
     opaacity: 1;
   }
+}
+
+dialog h3 {
+  text-align: center;
+}
+
+dialog button {
+  appearance: none;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: solid var(--accent);
+  border-radius: 1em;
+  font-family: inherit;
+}
+
+dialog p {
+  font-size: 2rem;
+  grid-column: 1/5;
+}
+
+.difficulty:hover {
+  border-color: red;
+}
+
+.difficulty:focus-visible {
+  outline: var(--accent) solid 0.2rem;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.start-button {
+  padding: 0.5rem 2rem;
+  font-weight: 700;
 }
