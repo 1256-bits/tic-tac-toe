@@ -73,11 +73,12 @@ function playField() {
   return { getBoard, makeMove, resetBoard };
 }
 
-function Player(marker) {
+function Player(marker, botLevel) {
   if (!Boolean(marker)) throw TypeError;
   const plMarker = String(marker[0]);
   const getMarker = () => plMarker;
-  return { getMarker };
+  const getBotLevel = () => botLevel;
+  return { getMarker, getBotLevel };
 }
 
 function gameController() {
@@ -105,6 +106,7 @@ function gameController() {
 }
 
 function uiController() {
+  let game;
   const cells = document.querySelectorAll(".cell");
   const players = document.querySelectorAll(".player");
   const endDialog = document.querySelector("#game-over");
@@ -171,7 +173,15 @@ function uiController() {
       });
     }),
   );
+  startButton.addEventListener("click", () => {
+    const diffs = document.querySelectorAll(".button-selected");
+    game = gameController([
+      Player("X", diffs[0].dataset.diff),
+      Player("O", diffs[0].dataset.diff),
+    ]);
+    startDialog.close();
+  });
+  startDialog.showModal();
 }
 
-const game = gameController();
 const ui = uiController();
