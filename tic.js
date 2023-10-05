@@ -77,21 +77,23 @@ function Player(marker, botLevel) {
   if (!Boolean(marker)) throw TypeError;
   const plMarker = String(marker[0]);
   const getMarker = () => plMarker;
-  const getBotLevel = () => botLevel;
+  const getBotLevel = () => parseInt(botLevel);
   return { getMarker, getBotLevel };
 }
 
-function gameController() {
-  const players = [Player("X"), Player("O")];
+function gameController(pl) {
+  const players = pl;
   const field = playField();
   let activePlayer = players[0];
 
   const playRound = (row, col) => {
-    const result = field.makeMove(activePlayer.getMarker(), row, col);
-    if (result.isValid()) {
-      activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    if (activePlayer.getBotLevel() === 0) {
+      const result = field.makeMove(activePlayer.getMarker(), row, col);
+      if (result.isValid()) {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+      }
+      return result;
     }
-    return result;
   };
 
   const getBoard = () =>
