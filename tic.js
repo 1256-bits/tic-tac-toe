@@ -179,7 +179,10 @@ function uiController() {
       const result = game.playRound();
       updateBoard();
       toCleared = true;
-      statusCheck(result);
+      const status = statusCheck(result);
+      if (status === 1 && game.getActivePlayer().getBotLevel() !== 0) {
+        botAction();
+      }
     }, 100);
   };
 
