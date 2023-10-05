@@ -100,7 +100,13 @@ function gameController(pl) {
 
   const generateMove = () => {
     console.log("no moves, sorry");
-    return [0, 0];
+    while (true) {
+      const row = Math.floor(Math.random() * 3);
+      const col = Math.floor(Math.random() * 3);
+      if (field.getBoard()[row][col] === "") {
+        return [row, col];
+      }
+    }
   };
 
   const getBoard = () =>
