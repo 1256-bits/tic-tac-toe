@@ -147,11 +147,18 @@ function uiController() {
       return;
     }
     updateBoard();
+    statusCheck(result);
+    // Active player already changed by game.playRound
+    if (game.getActivePlayer().getBotLevel() !== 0) {
+      botAction();
+    }
+  };
+
+  const statusCheck = (result) => {
     if (result.getStatus() === "draw") {
       endDialog.showModal();
       endText.innerText = "It's a draw";
-    }
-    if (result.getStatus() === "win") {
+    } else if (result.getStatus() === "win") {
       endDialog.showModal();
       endText.innerText = `${result.getMarker()} has won`;
     } else {
@@ -160,15 +167,16 @@ function uiController() {
         player.classList.toggle("idle");
       });
     }
-    // Active player already changed by game.playRound
-    if (game.getActivePlayer().getBotLevel() !== 0) {
-      toCleared = false;
-      setTimeout(() => {
-        game.playRound();
-        updateBoard();
-        toCleared = true;
-      }, 100);
-    }
+  };
+
+  const botAction = () => {
+    toCleared = false;
+    setTimeout(() => {
+      const result = game.playRound();
+      updateBoard();
+      toCleared = true;
+      statusCheck(result);
+    }, 100);
   };
 
   const updateBoard = () => {
@@ -212,6 +220,9 @@ function uiController() {
       Player("O", diffs[1].dataset.diff),
     ]);
     startDialog.close();
+    if (game.getActivePlayer().getBotLevel() !== 0) {
+      botAction();
+    }
   });
   startDialog.showModal();
 }
