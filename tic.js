@@ -159,6 +159,7 @@ function uiController() {
     endDialog.close();
     game.reset();
     updateBoard();
+    startDialog.showModal();
   };
 
   cells.forEach((cell) => cell.addEventListener("click", cellClick));
