@@ -112,8 +112,8 @@ function uiController() {
   const cells = document.querySelectorAll(".cell");
   const players = document.querySelectorAll(".player");
   const endDialog = document.querySelector("#game-over");
-  const resetButton = endDialog.lastElementChild;
-  const endText = endDialog.firstElementChild;
+  const resetButton = endDialog.querySelector("button");
+  const endText = endDialog.querySelector("#end-header");
   const startDialog = document.querySelector("#game-start");
   const difButtons = [
     startDialog.querySelectorAll("#player1 > .difficulty"),

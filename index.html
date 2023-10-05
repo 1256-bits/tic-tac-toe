@@ -1,73 +1,123 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script src="tic.js" defer></script>
     <title>Tic-tac-toe</title>
-</head>
+  </head>
 
-<body class="bg">
+  <body class="bg">
     <header class="header bg-primary">
-        <h1>TIC-TAC-TOE</h1>
+      <h1>TIC-TAC-TOE</h1>
     </header>
     <div class="game grid">
-        <div class="players">
-            <div class="player grid">
-                <svg class="player-icon">
-                    <use href="player.svg#player"></use>
-                </svg>
-                <p>Player #1</p>
-            </div>
-            <div class="player grid">
-                <svg class="player-icon">
-                    <use href="player.svg#player"></use>
-                </svg>
-                <p>Player #2</p>
-            </div>
+      <div class="players">
+        <div class="player grid">
+          <svg class="player-icon">
+            <use href="player.svg#player"></use>
+          </svg>
+          <p>Player #1</p>
         </div>
-        <div class="field grid">
-            <div class="cell b-right" data-index="0"></div>
-            <div class="cell b-right" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell b-right b-top" data-index="3"></div>
-            <div class="cell b-right b-top" data-index="4"></div>
-            <div class="cell b-top" data-index="5"></div>
-            <div class="cell b-right b-top" data-index="6"></div>
-            <div class="cell b-right b-top" data-index="7"></div>
-            <div class="cell b-top" data-index="8"></div>
+        <div class="player grid">
+          <svg class="player-icon">
+            <use href="player.svg#player"></use>
+          </svg>
+          <p>Player #2</p>
         </div>
+      </div>
+      <div class="field grid">
+        <div class="cell b-right" data-index="0"></div>
+        <div class="cell b-right" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell b-right b-top" data-index="3"></div>
+        <div class="cell b-right b-top" data-index="4"></div>
+        <div class="cell b-top" data-index="5"></div>
+        <div class="cell b-right b-top" data-index="6"></div>
+        <div class="cell b-right b-top" data-index="7"></div>
+        <div class="cell b-top" data-index="8"></div>
+      </div>
     </div>
     <dialog id="game-over" class="bg">
+      <div class="end-popup">
         <h3 id="end-header"></h3>
         <button>Restart</button>
+      </div>
     </dialog>
     <dialog id="game-start" class="bg">
-        <h3 id="start-header">Select players</h3>
-        <ul>
-            <li>
-                <label for="player1" id="player1">
-                    <p>Player #1:</p>
-                    <button class="difficulty bg-secondary" data-diff="0" data-player="0">Human</button>
-                    <button class="difficulty bg-secondary" data-diff="1" data-player="0">Bot (Easy)</button>
-                    <button class="difficulty bg-secondary" data-diff="2" data-player="0">Bot (Medium)</button>
-                    <button class="difficulty bg-secondary" data-diff="3" data-player="0">Bot (Hard)</button>
-                </label>
-            </li>
-            <li>
-                <label for="player2" id="player2">
-                    <p>Player #2:</p>
-                    <button class="difficulty bg-secondary" data-diff="0" data-player="1">Human</button>
-                    <button class="difficulty bg-secondary" data-diff="1" data-player="1">Bot (Easy)</button>
-                    <button class="difficulty bg-secondary" data-diff="2" data-player="1">Bot (Medium)</button>
-                    <button class="difficulty bg-secondary" data-diff="3" data-player="1">Bot (Hard)</button>
-                </label>
-            </li>
-        </ul>
-        <div class="button-wrapper"><button class="bg-secondary start-button">START</button></div>
+      <h3 id="start-header">Select players</h3>
+      <ul>
+        <li>
+          <label for="player1" id="player1">
+            <p>Player #1:</p>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="0"
+              data-player="0"
+            >
+              Human
+            </button>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="1"
+              data-player="0"
+            >
+              Bot (Easy)
+            </button>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="2"
+              data-player="0"
+            >
+              Bot (Medium)
+            </button>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="3"
+              data-player="0"
+            >
+              Bot (Hard)
+            </button>
+          </label>
+        </li>
+        <li>
+          <label for="player2" id="player2">
+            <p>Player #2:</p>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="0"
+              data-player="1"
+            >
+              Human
+            </button>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="1"
+              data-player="1"
+            >
+              Bot (Easy)
+            </button>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="2"
+              data-player="1"
+            >
+              Bot (Medium)
+            </button>
+            <button
+              class="difficulty bg-secondary"
+              data-diff="3"
+              data-player="1"
+            >
+              Bot (Hard)
+            </button>
+          </label>
+        </li>
+      </ul>
+      <div class="button-wrapper">
+        <button class="bg-secondary start-button">START</button>
+      </div>
     </dialog>
-</body>
-
+  </body>
 </html>

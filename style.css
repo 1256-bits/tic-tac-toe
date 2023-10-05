@@ -168,3 +168,10 @@ dialog button:active {
   padding: 0.5rem 2rem;
   font-weight: 700;
 }
+
+.end-popup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
