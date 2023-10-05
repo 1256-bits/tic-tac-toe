@@ -99,13 +99,16 @@ function gameController(pl) {
   };
 
   const generateMove = () => {
-    console.log("no moves, sorry");
     while (true) {
       const row = Math.floor(Math.random() * 3);
       const col = Math.floor(Math.random() * 3);
-      if (field.getBoard()[row][col] === "") {
+      const board = field.getBoard();
+      const hasFreeCells =
+        board.filter((row) => row.indexOf("") !== -1).length !== 0;
+      if (board[row][col] === "" && hasFreeCells) {
         return [row, col];
       }
+      if (!hasFreeCells) return;
     }
   };
 
@@ -147,9 +150,9 @@ function uiController() {
       return;
     }
     updateBoard();
-    statusCheck(result);
+    const status = statusCheck(result);
     // Active player already changed by game.playRound
-    if (game.getActivePlayer().getBotLevel() !== 0) {
+    if (game.getActivePlayer().getBotLevel() !== 0 && status === 1) {
       botAction();
     }
   };
@@ -166,6 +169,7 @@ function uiController() {
         player.classList.toggle("active");
         player.classList.toggle("idle");
       });
+      return 1;
     }
   };
 
