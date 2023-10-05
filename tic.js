@@ -107,9 +107,15 @@ function gameController() {
 function uiController() {
   const cells = document.querySelectorAll(".cell");
   const players = document.querySelectorAll(".player");
-  const dialog = document.querySelector("#game-over");
-  const closeButton = dialog.lastElementChild;
-  const dialogText = dialog.firstElementChild;
+  const endDialog = document.querySelector("#game-over");
+  const resetButton = endDialog.lastElementChild;
+  const endText = endDialog.firstElementChild;
+  const startDialog = document.querySelector("#game-start");
+  const difButtons = [
+    startDialog.querySelectorAll("#player1 > .difficulty"),
+    startDialog.querySelectorAll("#player2 > .difficulty"),
+  ];
+  const startButton = startDialog.querySelector(".start-button");
 
   const cellClick = (e) => {
     const index = e.target.dataset.index;
@@ -121,12 +127,12 @@ function uiController() {
     }
     updateBoard();
     if (result.getStatus() === "draw") {
-      dialog.showModal();
-      dialogText.innerText = "It's a draw";
+      endDialog.showModal();
+      endText.innerText = "It's a draw";
     }
     if (result.getStatus() === "win") {
-      dialog.showModal();
-      dialogText.innerText = `${result.getMarker()} has won`;
+      endDialog.showModal();
+      endText.innerText = `${result.getMarker()} has won`;
     } else {
       players.forEach((player) => {
         player.classList.toggle("active");
@@ -146,16 +152,25 @@ function uiController() {
   };
 
   const restartGame = () => {
-    dialog.close();
+    endDialog.close();
     game.reset();
     updateBoard();
   };
 
   cells.forEach((cell) => cell.addEventListener("click", cellClick));
-  dialog.addEventListener("cancel", (e) => e.preventDefault());
-  closeButton.addEventListener("click", restartGame);
+  endDialog.addEventListener("cancel", (e) => e.preventDefault());
+  resetButton.addEventListener("click", restartGame);
   players[0].classList.add("active");
   players[1].classList.add("idle");
+  difButtons.forEach((buttons) =>
+    buttons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        const buttons = difButtons[e.target.dataset.player];
+        buttons.forEach((button) => button.classList.remove("button-selected"));
+        e.target.classList.add("button-selected");
+      });
+    }),
+  );
 }
 
 const game = gameController();

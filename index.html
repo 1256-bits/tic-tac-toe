@@ -44,25 +44,25 @@
         <h3 id="end-header"></h3>
         <button>Restart</button>
     </dialog>
-    <dialog id="game-start" class="bg">
+    <dialog id="game-start" class="bg" open>
         <h3 id="start-header">Select players</h3>
         <ul>
             <li>
-                <label for="player1">
+                <label for="player1" id="player1">
                     <p>Player #1:</p>
-                    <button class="difficulty bg-secondary">Human</button>
-                    <button class="difficulty bg-secondary">Bot (Easy)</button>
-                    <button class="difficulty bg-secondary">Bot (Medium)</button>
-                    <button class="difficulty bg-secondary">Bot (Hard)</button>
+                    <button class="difficulty bg-secondary" data-diff="0" data-player="0">Human</button>
+                    <button class="difficulty bg-secondary" data-diff="1" data-player="0">Bot (Easy)</button>
+                    <button class="difficulty bg-secondary" data-diff="2" data-player="0">Bot (Medium)</button>
+                    <button class="difficulty bg-secondary" data-diff="3" data-player="0">Bot (Hard)</button>
                 </label>
             </li>
             <li>
-                <label for="player2">
+                <label for="player2" id="player2">
                     <p>Player #2:</p>
-                    <button class="difficulty bg-secondary">Human</button>
-                    <button class="difficulty bg-secondary">Bot (Easy)</button>
-                    <button class="difficulty bg-secondary">Bot (Medium)</button>
-                    <button class="difficulty bg-secondary">Bot (Hard)</button>
+                    <button class="difficulty bg-secondary" data-diff="0" data-player="1">Human</button>
+                    <button class="difficulty bg-secondary" data-diff="1" data-player="1">Bot (Easy)</button>
+                    <button class="difficulty bg-secondary" data-diff="2" data-player="1">Bot (Medium)</button>
+                    <button class="difficulty bg-secondary" data-diff="3" data-player="1">Bot (Hard)</button>
                 </label>
             </li>
         </ul>
