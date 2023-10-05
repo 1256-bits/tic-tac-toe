@@ -86,14 +86,21 @@ function gameController(pl) {
   const field = playField();
   let activePlayer = players[0];
 
-  const playRound = (row, col) => {
-    if (activePlayer.getBotLevel() === 0) {
-      const result = field.makeMove(activePlayer.getMarker(), row, col);
-      if (result.isValid()) {
-        activePlayer = activePlayer === players[0] ? players[1] : players[0];
-      }
-      return result;
+  const playRound = (r, c) => {
+    const [row, col] =
+      activePlayer.getBotLevel() === 0
+        ? [r, c]
+        : generateMove(activePlayer.getBotLevel());
+    const result = field.makeMove(activePlayer.getMarker(), row, col);
+    if (result.isValid()) {
+      activePlayer = activePlayer === players[0] ? players[1] : players[0];
     }
+    return result;
+  };
+
+  const generateMove = () => {
+    console.log("no moves, sorry");
+    return [0, 0];
   };
 
   const getBoard = () =>
@@ -104,11 +111,14 @@ function gameController(pl) {
     activePlayer = players[0];
   };
 
-  return { playRound, getBoard, reset };
+  const getActivePlayer = () => activePlayer;
+
+  return { playRound, getBoard, reset, getActivePlayer };
 }
 
 function uiController() {
   let game;
+  let toCleared = true;
   const cells = document.querySelectorAll(".cell");
   const players = document.querySelectorAll(".player");
   const endDialog = document.querySelector("#game-over");
@@ -122,6 +132,7 @@ function uiController() {
   const startButton = startDialog.querySelector(".start-button");
 
   const cellClick = (e) => {
+    if (!toCleared) return;
     const index = e.target.dataset.index;
     const row = Math.trunc(index / 3);
     const col = index % 3;
@@ -142,6 +153,15 @@ function uiController() {
         player.classList.toggle("active");
         player.classList.toggle("idle");
       });
+    }
+    // Active player already changed by game.playRound
+    if (game.getActivePlayer().getBotLevel() !== 0) {
+      toCleared = false;
+      setTimeout(() => {
+        game.playRound();
+        updateBoard();
+        toCleared = true;
+      }, 100);
     }
   };
 
@@ -178,9 +198,12 @@ function uiController() {
   );
   startButton.addEventListener("click", () => {
     const diffs = document.querySelectorAll(".button-selected");
+    if (diffs.length < 2) {
+      return;
+    }
     game = gameController([
       Player("X", diffs[0].dataset.diff),
-      Player("O", diffs[0].dataset.diff),
+      Player("O", diffs[1].dataset.diff),
     ]);
     startDialog.close();
   });
