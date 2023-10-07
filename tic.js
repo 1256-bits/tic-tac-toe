@@ -18,46 +18,50 @@ function playField() {
 
   const field = createField();
 
-  const checkWin = () => {
+  const evaluate = () => {
     for (let i = 0; i < 3; i++) {
-      const colResult = field[0][i] + field[1][i] + field[2][i];
-      const rowResult = field[i].join("");
-      if (isCombo(colResult)) {
-        return result(true, "win", colResult[0]);
+      if (
+        field[0][i] === field[1][i] &&
+        field[1][i] === field[2][i] &&
+        field[0][i] !== ""
+      ) {
+        return result(true, "win", field[0][i]);
       }
-      if (isCombo(rowResult)) {
-        return result(true, "win", rowResult[0]);
+      if (
+        field[i][0] === field[i][1] &&
+        field[i][1] === field[i][2] &&
+        field[i][0] !== ""
+      ) {
+        return result(true, "win", field[i][0]);
       }
     }
 
-    const leftDiag = field[0][0] + field[1][1] + field[2][2];
-    const rightDiag = field[0][2] + field[1][1] + field[2][0];
-    if (isCombo(leftDiag)) {
-      return result(true, "win", leftDiag[0]);
-    } else if (isCombo(rightDiag)) {
-      return result(true, "win", rightDiag[0]);
-    } else if (noMoreMoves()) {
-      return result(true, "draw");
+    if (
+      field[0][0] === field[1][1] &&
+      field[1][1] === field[2][2] &&
+      field[0][0] !== ""
+    ) {
+      return result(true, "win", field[0][0]);
     }
-    return result(true);
+    if (
+      field[0][2] === field[1][1] &&
+      field[1][1] === field[2][0] &&
+      field[0][2] !== ""
+    ) {
+      return result(true, "win", field[0][2]);
+    }
+    return noMovesLeft() ? result(true, "draw") : result(true);
   };
 
-  const noMoreMoves = () =>
+  const noMovesLeft = () =>
     field.filter((row) => row.indexOf("") !== -1).length === 0;
-
-  const isCombo = (str) => {
-    if (str.length != 3) return false;
-    const uniqChars = new Set([...str]).size;
-    if (uniqChars != 1) return false;
-    return true;
-  };
 
   const makeMove = (player, row, col) => {
     if (field[row][col]) {
       return result(false);
     }
     field[row][col] = player;
-    return checkWin();
+    return evaluate();
   };
 
   const getBoard = () => field;
@@ -190,9 +194,9 @@ function uiController() {
     const board = game.getBoard();
     cells.forEach(
       (cell) =>
-        (cell.style.backgroundImage = `url(${board[
-          cell.dataset.index
-        ].toLowerCase()}.svg)`),
+      (cell.style.backgroundImage = `url(${board[
+        cell.dataset.index
+      ].toLowerCase()}.svg)`),
     );
   };
 
