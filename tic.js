@@ -66,7 +66,8 @@ function gameController(pl) {
     };
 
     const generateMove = () => {
-        while (true) {
+        return bestMove(field.getBoard());
+        /* while (true) {
             const row = Math.floor(Math.random() * 3);
             const col = Math.floor(Math.random() * 3);
             const board = field.getBoard();
@@ -76,8 +77,26 @@ function gameController(pl) {
                 return [row, col];
             }
             if (!hasFreeCells) return;
-        }
+        } */
     };
+
+    const bestMove = (board) => {
+        let currentBest = -1000;
+        let bestMove = [-1, -1];
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[i].length; i++) {
+                if (board[i][j] != "") continue;
+                board[i][j] = activePlayer.getMarker();
+                const score = minmax(board, false, 0);
+                board[i][j] = "";
+                if (score > currentBest) {
+                    currentBest = score;
+                    bestMove = [i,j];
+                }
+            }
+        }
+        return bestMove();
+    }
 
     const evaluate = (board) => {
         for (let i = 0; i < 3; i++) {
