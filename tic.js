@@ -68,16 +68,16 @@ function gameController(pl) {
     const generateMove = () => {
         return findBestMove(field.getBoard());
         /* while (true) {
-                const row = Math.floor(Math.random() * 3);
-                const col = Math.floor(Math.random() * 3);
-                const board = field.getBoard();
-                const hasFreeCells =
-                    board.filter((row) => row.indexOf("") !== -1).length !== 0;
-                if (board[row][col] === "" && hasFreeCells) {
-                    return [row, col];
-                }
-                if (!hasFreeCells) return;
-            } */
+                        const row = Math.floor(Math.random() * 3);
+                        const col = Math.floor(Math.random() * 3);
+                        const board = field.getBoard();
+                        const hasFreeCells =
+                            board.filter((row) => row.indexOf("") !== -1).length !== 0;
+                        if (board[row][col] === "" && hasFreeCells) {
+                            return [row, col];
+                        }
+                        if (!hasFreeCells) return;
+                    } */
     };
 
     const findBestMove = (board) => {
@@ -85,9 +85,9 @@ function gameController(pl) {
         let bestMove = [-1, -1];
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[i].length; i++) {
-                if (board[i][j] != "") continue;
+                if (board[i][j] !== "") continue;
                 board[i][j] = activePlayer.getMarker();
-                const score = minmax(board, false, 0);
+                const score = minmax(board, true, 0);
                 board[i][j] = "";
                 if (score > currentBest) {
                     currentBest = score;
@@ -98,55 +98,84 @@ function gameController(pl) {
         return bestMove;
     };
 
-const evaluate = (board) => {
-    for (let i = 0; i < 3; i++) {
+    const minmax = (board, isMax, depth) => {
+        const status = evaluate(board).getStatus();
+        if (status == "win" && isMax) return 10 - depth;
+        if (status == "win" && !isMax) return -10 - depth;
+        if (status == "draw") return 0;
+        if (isMax) {
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; i++) {
+                    if (board[i][j] !== "") continue;
+                    board[i][j] = activePlayer.getMarker();
+                    const score = minmax(board, false, depth + 1);
+                    board[i][j] = "";
+                    return score;
+                }
+            }
+        } else {
+            const opponent = activePlayer === players[0] ? players[1] : players[0];
+            for (let i = 0; i < board.length; i++) {
+                for (let j = 0; j < board[i].length; i++) {
+                    if (board[i][j] !== "") continue;
+                    board[i][j] = opponent.getMarker();
+                    const score = minmax(board, true, depth + 1);
+                    board[i][j] = "";
+                    return score;
+                }
+            }
+        }
+    };
+
+    const evaluate = (board) => {
+        for (let i = 0; i < 3; i++) {
+            if (
+                board[0][i] === board[1][i] &&
+                board[1][i] === board[2][i] &&
+                board[0][i] !== ""
+            ) {
+                return result(true, "win", board[0][i]);
+            }
+            if (
+                board[i][0] === board[i][1] &&
+                board[i][1] === board[i][2] &&
+                board[i][0] !== ""
+            ) {
+                return result(true, "win", board[i][0]);
+            }
+        }
+
         if (
-            board[0][i] === board[1][i] &&
-            board[1][i] === board[2][i] &&
-            board[0][i] !== ""
+            board[0][0] === board[1][1] &&
+            board[1][1] === board[2][2] &&
+            board[0][0] !== ""
         ) {
-            return result(true, "win", board[0][i]);
+            return result(true, "win", board[0][0]);
         }
         if (
-            board[i][0] === board[i][1] &&
-            board[i][1] === board[i][2] &&
-            board[i][0] !== ""
+            board[0][2] === board[1][1] &&
+            board[1][1] === board[2][0] &&
+            board[0][2] !== ""
         ) {
-            return result(true, "win", board[i][0]);
-        } statements
-    }
+            return result(true, "win", board[0][2]);
+        }
+        return noMovesLeft(board) ? result(true, "draw") : result(true);
+    };
 
-    if (
-        board[0][0] === board[1][1] &&
-        board[1][1] === board[2][2] &&
-        board[0][0] !== ""
-    ) {
-        return result(true, "win", board[0][0]);
-    }
-    if (
-        board[0][2] === board[1][1] &&
-        board[1][1] === board[2][0] &&
-        board[0][2] !== ""
-    ) {
-        return result(true, "win", board[0][2]);
-    }
-    return noMovesLeft(board) ? result(true, "draw") : result(true);
-};
+    const noMovesLeft = (board) =>
+        board.filter((row) => row.indexOf("") !== -1).length === 0;
 
-const noMovesLeft = (board) =>
-    board.filter((row) => row.indexOf("") !== -1).length === 0;
+    const getBoard = () =>
+        field.getBoard().reduce((total, row) => total.concat(row));
 
-const getBoard = () =>
-    field.getBoard().reduce((total, row) => total.concat(row));
+    const reset = () => {
+        field.resetBoard();
+        activePlayer = players[0];
+    };
 
-const reset = () => {
-    field.resetBoard();
-    activePlayer = players[0];
-};
+    const getActivePlayer = () => activePlayer;
 
-const getActivePlayer = () => activePlayer;
-
-return { playRound, getBoard, reset, getActivePlayer };
+    return { playRound, getBoard, reset, getActivePlayer };
 }
 
 function uiController() {
