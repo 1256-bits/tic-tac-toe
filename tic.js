@@ -68,16 +68,16 @@ function gameController(pl) {
     const generateMove = () => {
         return findBestMove(field.getBoard());
         /* while (true) {
-                        const row = Math.floor(Math.random() * 3);
-                        const col = Math.floor(Math.random() * 3);
-                        const board = field.getBoard();
-                        const hasFreeCells =
-                            board.filter((row) => row.indexOf("") !== -1).length !== 0;
-                        if (board[row][col] === "" && hasFreeCells) {
-                            return [row, col];
-                        }
-                        if (!hasFreeCells) return;
-                    } */
+                            const row = Math.floor(Math.random() * 3);
+                            const col = Math.floor(Math.random() * 3);
+                            const board = field.getBoard();
+                            const hasFreeCells =
+                                board.filter((row) => row.indexOf("") !== -1).length !== 0;
+                            if (board[row][col] === "" && hasFreeCells) {
+                                return [row, col];
+                            }
+                            if (!hasFreeCells) return;
+                        } */
     };
 
     const findBestMove = (board) => {
@@ -87,7 +87,7 @@ function gameController(pl) {
             for (let j = 0; j < board[i].length; j++) {
                 if (board[i][j] !== "") continue;
                 board[i][j] = activePlayer.getMarker();
-                const score = minmax(board, true, 0);
+                const score = minmax(board, false, 0);
                 board[i][j] = "";
                 if (score > currentBest) {
                     currentBest = score;
@@ -99,31 +99,35 @@ function gameController(pl) {
     };
 
     const minmax = (board, isMax, depth) => {
-        const status = evaluate(board).getStatus();
-        if (status == "win" && isMax) return 10 - depth;
-        if (status == "win" && !isMax) return -10 - depth;
-        if (status == "draw") return 0;
+        const result = evaluate(board);
+        if (result.getStatus() == "win")
+            return result.getMarker() === activePlayer.getMarker() ? 10 - depth : -10 - depth;
+        if (result.getStatus() == "draw") return 0;
         if (isMax) {
+            let best = -1000;
             for (let i = 0; i < board.length; i++) {
                 for (let j = 0; j < board[i].length; j++) {
                     if (board[i][j] !== "") continue;
                     board[i][j] = activePlayer.getMarker();
-                    const score = minmax(board, false, depth + 1);
+                    const score = minmax(board, !isMax, depth + 1);
+                    best = score > best ? score : best;
                     board[i][j] = "";
-                    return score;
                 }
             }
+            return best;
         } else {
             const opponent = activePlayer === players[0] ? players[1] : players[0];
+            let best = 1000;
             for (let i = 0; i < board.length; i++) {
                 for (let j = 0; j < board[i].length; j++) {
                     if (board[i][j] !== "") continue;
                     board[i][j] = opponent.getMarker();
-                    const score = minmax(board, true, depth + 1);
+                    const score = minmax(board, !isMax, depth + 1);
+                    best = score < best ? score : best;
                     board[i][j] = "";
-                    return score;
                 }
             }
+            return best;
         }
     };
 
