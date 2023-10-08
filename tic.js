@@ -84,7 +84,7 @@ function gameController(pl) {
         let currentBest = -1000;
         let bestMove = [-1, -1];
         for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; i++) {
+            for (let j = 0; j < board[i].length; j++) {
                 if (board[i][j] !== "") continue;
                 board[i][j] = activePlayer.getMarker();
                 const score = minmax(board, true, 0);
@@ -105,7 +105,7 @@ function gameController(pl) {
         if (status == "draw") return 0;
         if (isMax) {
             for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
                     if (board[i][j] !== "") continue;
                     board[i][j] = activePlayer.getMarker();
                     const score = minmax(board, false, depth + 1);
@@ -116,7 +116,7 @@ function gameController(pl) {
         } else {
             const opponent = activePlayer === players[0] ? players[1] : players[0];
             for (let i = 0; i < board.length; i++) {
-                for (let j = 0; j < board[i].length; i++) {
+                for (let j = 0; j < board[i].length; j++) {
                     if (board[i][j] !== "") continue;
                     board[i][j] = opponent.getMarker();
                     const score = minmax(board, true, depth + 1);
