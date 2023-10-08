@@ -66,21 +66,21 @@ function gameController(pl) {
     };
 
     const generateMove = () => {
-        return bestMove(field.getBoard());
+        return findBestMove(field.getBoard());
         /* while (true) {
-            const row = Math.floor(Math.random() * 3);
-            const col = Math.floor(Math.random() * 3);
-            const board = field.getBoard();
-            const hasFreeCells =
-                board.filter((row) => row.indexOf("") !== -1).length !== 0;
-            if (board[row][col] === "" && hasFreeCells) {
-                return [row, col];
-            }
-            if (!hasFreeCells) return;
-        } */
+                const row = Math.floor(Math.random() * 3);
+                const col = Math.floor(Math.random() * 3);
+                const board = field.getBoard();
+                const hasFreeCells =
+                    board.filter((row) => row.indexOf("") !== -1).length !== 0;
+                if (board[row][col] === "" && hasFreeCells) {
+                    return [row, col];
+                }
+                if (!hasFreeCells) return;
+            } */
     };
 
-    const bestMove = (board) => {
+    const findBestMove = (board) => {
         let currentBest = -1000;
         let bestMove = [-1, -1];
         for (let i = 0; i < board.length; i++) {
@@ -91,62 +91,62 @@ function gameController(pl) {
                 board[i][j] = "";
                 if (score > currentBest) {
                     currentBest = score;
-                    bestMove = [i,j];
+                    bestMove = [i, j];
                 }
             }
         }
-        return bestMove();
+        return bestMove;
+    };
+
+const evaluate = (board) => {
+    for (let i = 0; i < 3; i++) {
+        if (
+            board[0][i] === board[1][i] &&
+            board[1][i] === board[2][i] &&
+            board[0][i] !== ""
+        ) {
+            return result(true, "win", board[0][i]);
+        }
+        if (
+            board[i][0] === board[i][1] &&
+            board[i][1] === board[i][2] &&
+            board[i][0] !== ""
+        ) {
+            return result(true, "win", board[i][0]);
+        } statements
     }
 
-    const evaluate = (board) => {
-        for (let i = 0; i < 3; i++) {
-            if (
-                board[0][i] === board[1][i] &&
-                board[1][i] === board[2][i] &&
-                board[0][i] !== ""
-            ) {
-                return result(true, "win", board[0][i]);
-            }
-            if (
-                board[i][0] === board[i][1] &&
-                board[i][1] === board[i][2] &&
-                board[i][0] !== ""
-            ) {
-                return result(true, "win", board[i][0]);
-            }
-        }
+    if (
+        board[0][0] === board[1][1] &&
+        board[1][1] === board[2][2] &&
+        board[0][0] !== ""
+    ) {
+        return result(true, "win", board[0][0]);
+    }
+    if (
+        board[0][2] === board[1][1] &&
+        board[1][1] === board[2][0] &&
+        board[0][2] !== ""
+    ) {
+        return result(true, "win", board[0][2]);
+    }
+    return noMovesLeft(board) ? result(true, "draw") : result(true);
+};
 
-        if (
-            board[0][0] === board[1][1] &&
-            board[1][1] === board[2][2] &&
-            board[0][0] !== ""
-        ) {
-            return result(true, "win", board[0][0]);
-        }
-        if (
-            board[0][2] === board[1][1] &&
-            board[1][1] === board[2][0] &&
-            board[0][2] !== ""
-        ) {
-            return result(true, "win", board[0][2]);
-        }
-        return noMovesLeft(board) ? result(true, "draw") : result(true);
-    };
+const noMovesLeft = (board) =>
+    board.filter((row) => row.indexOf("") !== -1).length === 0;
 
-    const noMovesLeft = (board) =>
-        board.filter((row) => row.indexOf("") !== -1).length === 0;
+const getBoard = () =>
+    field.getBoard().reduce((total, row) => total.concat(row));
 
-    const getBoard = () =>
-        field.getBoard().reduce((total, row) => total.concat(row));
+const reset = () => {
+    field.resetBoard();
+    activePlayer = players[0];
+};
 
-    const reset = () => {
-        field.resetBoard();
-        activePlayer = players[0];
-    };
+const getActivePlayer = () => activePlayer;
 
-    const getActivePlayer = () => activePlayer;
-
-    return { playRound, getBoard, reset, getActivePlayer };
+return { playRound, getBoard, reset, getActivePlayer };
 }
 
 function uiController() {
