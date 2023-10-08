@@ -66,18 +66,25 @@ function gameController(pl) {
     };
 
     const generateMove = () => {
-        return findBestMove(field.getBoard());
-        /* while (true) {
-                            const row = Math.floor(Math.random() * 3);
-                            const col = Math.floor(Math.random() * 3);
-                            const board = field.getBoard();
-                            const hasFreeCells =
-                                board.filter((row) => row.indexOf("") !== -1).length !== 0;
-                            if (board[row][col] === "" && hasFreeCells) {
-                                return [row, col];
-                            }
-                            if (!hasFreeCells) return;
-                        } */
+        const rng = Math.random();
+        if (
+            (rng >= 0.5 && activePlayer.getBotLevel() === 1) ||
+            (rng >= 0.25 && activePlayer.getBotLevel() === 2) ||
+            (rng >= 0.15 && activePlayer.getBotLevel() === 3)
+        ) {
+            return findBestMove(field.getBoard());
+        }
+        while (true) {
+            const row = Math.floor(Math.random() * 3);
+            const col = Math.floor(Math.random() * 3);
+            const board = field.getBoard();
+            const hasFreeCells =
+                board.filter((row) => row.indexOf("") !== -1).length !== 0;
+            if (board[row][col] === "") {
+                return [row, col];
+            }
+            if (!hasFreeCells) return;
+        }
     };
 
     const findBestMove = (board) => {
@@ -101,7 +108,9 @@ function gameController(pl) {
     const minmax = (board, isMax, depth) => {
         const result = evaluate(board);
         if (result.getStatus() == "win")
-            return result.getMarker() === activePlayer.getMarker() ? 10 - depth : -10 - depth;
+            return result.getMarker() === activePlayer.getMarker()
+                ? 10 - depth
+                : -10 - depth;
         if (result.getStatus() == "draw") return 0;
         if (isMax) {
             let best = -1000;
